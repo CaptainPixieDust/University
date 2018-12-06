@@ -7,40 +7,46 @@ namespace University
     {
         public static void Main(string[] args)
         {
-            Faculty faculty = new Faculty();
+            ConsoleWriter writer = new ConsoleWriter();
+            Faculty faculty = new Faculty(writer);
             Console.WriteLine("Enter faculty name:");
             faculty.facultyName = Console.ReadLine();
 
             bool done = false;
 
-            while(!done){
-                Console.WriteLine("Choose action:\n1 - Add Speciality \n2 - Add group \n3 - Add students to grounp");
+            while (!done)
+            {
+                Console.WriteLine("Choose action:\n1 - Add Speciality \n2 - Add group \n3 - Add students to grounp \n4 - Add teachers");
                 int ans;
                 string str;
 
                 int.TryParse(Console.ReadLine(), out ans);
-                switch(ans){
+                switch (ans)
+                {
                     case 1:
                         Console.WriteLine("Choose speciality name:");
                         str = Console.ReadLine();
-                        AddSpeciality(str, faculty);
+                        faculty.AddSpeciality(str);
                         break;
                     case 2:
                         Console.WriteLine("Enter group name:");
                         str = Console.ReadLine();
                         Console.WriteLine("Enter number of students");
                         int.TryParse(Console.ReadLine(), out ans);
-                        AddGroup(ans, str, SelectSpeciality(faculty.specialities));
+                        Speciality speciality = SelectSpeciality(faculty.specialities);
+                        speciality.AddGroup(ans, str);
                         break;
                     case 3:
                         Group group = SelectGroup(SelectSpeciality(faculty.specialities).groups);
-                        AddStudents(group);
+                        group.AddStudents();
                         break;
+                        //case 4:
+                        //faculty.
                 }
 
                 Console.WriteLine("to exit press e");
                 str = Console.ReadLine();
-                if(str == "e")
+                if (str == "e")
                     done = true;
             }
 
@@ -49,34 +55,15 @@ namespace University
         }
 
         //for future
-        public static void AddFaculty(string name){
-            
+        public static void AddFaculty(string name)
+        {
+
         }
 
-        public static void AddSpeciality(string name, Faculty faculty){
-            faculty.specialities.Add(new Speciality(name));
-        }
-
-        public static void AddGroup(int studentsCount, string name, Speciality speciality){
-            speciality.groups.Add(new Group(name, studentsCount));
-        }
-
-        public static void AddStudents(Group group){
-            for (int i = 0; i < group.numberOfStudents; i++)
+        public static Speciality SelectSpeciality(List<Speciality> specialities)
+        {
+            if (specialities.Count == 1)
             {
-                Console.WriteLine("Enter student's name");
-                string name = Console.ReadLine();
-                Console.WriteLine("Enter student's surname");
-                string surname = Console.ReadLine();
-                Console.WriteLine("Enter studants age");
-                int age;
-                int.TryParse(Console.ReadLine(), out age);
-                group.students.Add(new Student(name, surname, age));
-            }
-        }
-
-        public static Speciality SelectSpeciality(List<Speciality> specialities){
-            if(specialities.Count == 1){
                 return specialities[0];
             }
             int index;
@@ -91,8 +78,10 @@ namespace University
             return specialities[index - 1];
         }
 
-        public static Group SelectGroup(List<Group> groups){
-            if(groups.Count == 1){
+        public static Group SelectGroup(List<Group> groups)
+        {
+            if (groups.Count == 1)
+            {
                 return groups[0];
             }
 
@@ -107,7 +96,8 @@ namespace University
             return groups[index - 1];
         }
 
-        public static void ShowStudentsList(Group group){
+        public static void ShowStudentsList(Group group)
+        {
             foreach (var student in group.students)
             {
                 Console.WriteLine(student);

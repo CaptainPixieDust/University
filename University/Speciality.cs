@@ -15,6 +15,14 @@ namespace University
             subjects = new List<Subject>();
         }
 
+        public void AddGroup(int studentsCount, string name)
+        {
+            groups.Add(new Group(name, studentsCount));
+        }
 
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

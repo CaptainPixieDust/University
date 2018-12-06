@@ -3,10 +3,25 @@ namespace University
 {
     public class Subject
     {
-        public string name;
-        public int hours;
-        public Subject()
+        private string name;
+        private int hours;
+
+        public string Name
         {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public int Hours
+        {
+            get { return hours; }
+            set { hours = value; }
+        }
+
+        public Subject(string name)
+        {
+            Name = name;
+            Hours = hours;
         }
     }
 }
